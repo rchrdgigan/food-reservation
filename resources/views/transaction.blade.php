@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container transaction-container">
-    <div class="row mb-5">
+<div class="container transaction-container  mb-5">
+    <div class="row">
         <div class="col-xl-6 col-md-6 col-sm-12 col-12 transaction-right card mt-4 p-4">
             <h2 class="p-3 text-center">Transaction Payment</h2>
             @if(session('message'))
@@ -45,14 +45,14 @@
         </div>
         <div class="col-xl-6 col-md-6 col-sm-12 col-12 transaction-left mt-4">
             <div class="gcash-container">
-                <h2 class="card-header text-center mb-4">Our G-Cash Information</h2>
+                <h2 class="card-header text-center mb-4 text-white" style="background-color:#5f9ea0">Our G-Cash Information</h2>
                 <h5>G-Cash Name:</h5>
                 <p style="text-align: center"><b>{{($gcash == '' || $gcash->gname == NULL) ? 'Not Availabe' : $gcash->gname}}</b></p>
                 <h5>G-Cash Account Number:</h5>
                 <p style="text-align: center"><b>{{($gcash == '' || $gcash->gnumber == NULL) ? 'Not Availabe' : $gcash->gnumber}}</b></p>
             </div>
             <div class="contact-us">
-                <h2 class="card-header text-center mb-4">Contact Us</h2>
+                <h2 class="card-header text-center mb-4 text-white" style="background-color:#5f9ea0">Contact Us</h2>
                 <h5>Contact Number:</h5>
                 <p style="text-align: center"><b>{{($business == '' || $business->cpnumber == NULL) ? 'Not Availabe' : $business->cpnumber}}</b></p>
                 <h5>E-mail:</h5>

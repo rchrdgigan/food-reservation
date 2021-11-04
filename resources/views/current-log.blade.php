@@ -8,69 +8,77 @@
                 <div class="card-body">
                     <div class="col-lg-8 mx-auto">
                     <div class="text-left pt-2">
-                            <h3 class="text-uppercase pb-2"><u><b> Current Transaction</b></u></h3>
+                    
+                            <h3 class="text-uppercase pb-2" style="color:#5f9ea0"><u><b> Current Transaction</b></u></h3>
                             <div class="row">
                                 <div class="form-group col-6">
                                     <label>Venue:</label>
-                                    <label style="color:#5f9ea0">f</label>
+                                    <label style="color:#5f9ea0">{{$current->venue}}</label>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Motif:</label>
-                                    <label style="color:#5f9ea0">e</label>
+                                    <label style="color:#5f9ea0">{{$current->motif}}</label>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Number of Guest:</label>
-                                    <label style="color:#5f9ea0">d</label>
+                                    <label style="color:#5f9ea0">{{$current->guests_no}}</label>
                                 </div>
                                 <div class="form-group col-6">
                                     <label>Date and Time Due:</label>
-                                    <label style="color:#5f9ea0">c</label>
+                                    <label style="color:#5f9ea0">{{Carbon\Carbon::parse($current->r_date)->format('M d, Y - H:i:s')}}H</label>
                                 </div>
 
                                 <div class="form-group col-6">
                                     <label>Reservation Type:</label>
-                                    <label style="color:#5f9ea0">b</label>
+                                    <label style="color:#5f9ea0">{{$current->r_type}}</label>
                                 </div>
-
-                                <div class="form-group col-6">
+                                @foreach($current->reservation_package->where('reservation_id' , $current->id) as $datas)
+                                <div class="form-group col-6  m-0">
                                     <label>Package Order:</label>
-                                    <label style="color:#5f9ea0">n - m</label>
+                                    <label style="color:#5f9ea0">{{$datas->package_name}} - ₱{{$datas->price}}.00</label>
+                                    @foreach($datas->foods as $fdata)
+                                    <ul>
+                                        <li>
+                                            <a class="btn-link text-secondary">{{$fdata}}</a>
+                                        </li>
+                                    </ul>
+                                    @endforeach
                                 </div>
+                                @endforeach
                             </div>
                            
                             <hr>
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label>Gcash name:</label>
-                                        <label style="color:#5f9ea0">d</label>
+                                        <label>Your Gcash Name:</label>
+                                        <label style="color:#5f9ea0">{{$current->gcash_name}}</label>
                                     </div>
                                     <div class="form-group">
                                         <label>Upload Receipt: </label>
-                                        <label style="color:#5f9ea0"><i class="fas fa-check-circle text-success"></i><a href="">Uploaded</a></label>
+                                        <label style="color:#5f9ea0"><i class="fas fa-check-circle text-success"></i><a href="/storage/upload_receipt/{{$current->upload_image}}">Uploaded</a></label>
                                     </div>
                                     <div class="form-group">
                                         <label>Downpayment:</label>
-                                        <label style="color:#5f9ea0">z</label>
+                                        <label style="color:#5f9ea0">₱{{$current->downpayment}}.00</label>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label>Package Amount x No. Guest: </label>
-                                        <label style="color:#5f9ea0">p x y</label>
+                                        <label style="color:#5f9ea0">{{$datas->price}} x {{$current->guests_no}}</label>
                                     </div>
                                     <div class="form-group">
                                         <label>Total Payment:</label>
-                                        <label style="color:#5f9ea0">a</label>
+                                        <label style="color:#5f9ea0">₱{{$current->total_payment}}.00</label>
                                     </div>
                                     <div class="form-group">
                                         <label>Status:</label>
-                                        <label class="text-danger">pending</label>
+                                        <label class="text-danger">{{$current->status}}</label>
                                     </div>
                                 </div>
                             </div>
                             <hr>
-                            <a href="" class="btn btn-danger btn-sm float-left">Cancel Transaction</a>
                         </div>
                     </div>
                 </div>

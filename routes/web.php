@@ -13,7 +13,8 @@ use App\Http\Controllers\{
     ReservationController,
     AdminPageController,
     BusinessSettingController,
-    PageController
+    PageController,
+    UserController,
 };
 
 use App\Models\Business;
@@ -22,13 +23,13 @@ Route::get('/',[PageController::class, 'mainPage'])->name('index');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => 'auth'], function () {
     Route::prefix('client')->group(function(){
+        Route::put('/udpate/profile', [UserController::class, 'updateUser'])->name('update.profile');
         Route::get('reservation', [ReservationController::class, 'index'])->name('reservation');
         Route::post('add/reservation', [ReservationController::class, 'store'])->name('add.reservation');
         Route::post('add/transaction', [ReservationController::class, 'transaction'])->name('transaction');
         //show transaction log
         Route::get('transaction/log/history', [ReservationController::class, 'transactionHistory'])->name('transaction.history');
         Route::get('transaction/current/history', [ReservationController::class, 'currentHistory'])->name('current.history');
-        
     });
 });
 
@@ -50,6 +51,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
         Route::get('pending/transaction/list', [AdminPageController::class, 'pendingList'])->name('pending.transaction');
         Route::get('inprocess/transaction/list', [AdminPageController::class, 'approvedList'])->name('inprocess.transaction');
         Route::get('completed/transaction/list', [AdminPageController::class, 'completedList'])->name('completed.transaction');
+
+        Route::get('cancel/transaction/list', [AdminPageController::class, 'cancelList'])->name('cancel.transaction');
+
         Route::get('setting/business', [AdminPageController::class, 'adminSetting'])->name('business.setting');
         //setting crud
         Route::post('setting/business/information', [BusinessSettingController::class, 'settingInformation'])->name('setting.information');
@@ -71,5 +75,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
         //trasaction complete
         Route::put('completed/transaction/{id}', [ReservationController::class, 'completedReservation'])->name('completed');
         Route::post('completed/transaction/view/{id}', [ReservationController::class, 'viewCompleted'])->name('view.completed');
+        //trasaction cancel
+        Route::put('cancel/transaction', [ReservationController::class, 'cancelReservation'])->name('cancel');
+        Route::post('cancel/transaction/view/{id}', [ReservationController::class, 'viewCanceled'])->name('view.completed');
+
     });
 });

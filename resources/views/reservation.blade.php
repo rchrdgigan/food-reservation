@@ -5,7 +5,7 @@
     @csrf
     <div class="container">
         <div class="card mt-5">
-        <h4 class="card-header text-center">Reservation Form</h4>
+        <h4 class="card-header text-center text-white" style="background-color:#5f9ea0">Reservation Form</h4>
         <div class="outer-form-container">
             <div class="form-container card-body mx-auto">
                 <p>

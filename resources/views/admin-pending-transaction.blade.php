@@ -53,7 +53,7 @@
                 <tr>
                     <td hidden=""></td>
                     <td>{{str_pad($data->id, 6, '0', STR_PAD_LEFT)}}</td>
-                    <td>{{$data->name}}</td>
+                    <td>{{$data->first_name}} {{$data->middle_name}} {{$data->last_name}}</td>
                     <td>{{$data->total_payment}}</td>
                     <td>{{$data->venue}}</td>
                     <td>{{$data->guests_no}}</td>

@@ -105,7 +105,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </li>
           
           <li class="nav-item">
-            <a href="#" class="nav-link {{(request()->route()->getName()=='pending.transaction' || request()->route()->getName()=='inprocess.transaction' || request()->route()->getName()=='completed.transaction' || request()->route()->getName()=='view.pending')?'active':''}}">
+            <a href="#" class="nav-link {{(request()->route()->getName()=='pending.transaction' || request()->route()->getName()=='inprocess.transaction' || request()->route()->getName()=='completed.transaction' || request()->route()->getName()=='cancel.transaction' || request()->route()->getName()=='view.pending' || request()->route()->getName()=='view.inprocess' || request()->route()->getName()=='view.completed' || request()->route()->getName()=='view.cancel')?'active':''}}">
               <i class="nav-icon fas fa-edit"></i>
               <p>
               Transaction
@@ -127,6 +127,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <a href="{{route('completed.transaction')}}" class="nav-link {{(request()->route()->getName()=='completed.transaction' || request()->route()->getName()=='view.completed')?'active':''}}">
                 <i class="nav-icon fas fa-calendar-check ml-3"></i>
                 <p>Completed</p></a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('cancel.transaction')}}" class="nav-link {{(request()->route()->getName()=='cancel.transaction' || request()->route()->getName()=='view.cancel')?'active':''}}">
+                <i class="nav-icon fas fa-file ml-3"></i>
+                <p>Canceled</p></a>
               </li>
             </ul>
           </li>
@@ -365,6 +370,14 @@ $('#editGcashModal').on('show.bs.modal', function (e) {
   $('#editGcashForm').find('[name="gname"]').val(gname);
   $('#editGcashForm').find('[name="gnumber"]').val(gnumber);
 
+});
+</script>
+<script>
+$('#showCancelModal').on('show.bs.modal', function (e) {
+  var opener=e.relatedTarget;
+  var id=$(opener).attr('id');
+
+  $('#cancel_frm').find('[name="id"]').val(id);
 });
 </script>
 

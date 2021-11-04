@@ -21,6 +21,8 @@ class Reservation extends Model
         'downpayment',
         'gcash_name',
         'upload_image',
+        'reason',
+        'rf_upload_image',
         'dp_date_time',
         'status',
     ];

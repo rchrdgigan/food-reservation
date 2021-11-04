@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\{Reservation,FoodPackage,Food,ReservationPackage,User,Business,GCashInfo};
+use File;
 
 class ReservationController extends Controller
 {
@@ -190,11 +191,63 @@ class ReservationController extends Controller
         $pending_list = Reservation::with('reservation_package')->where('status', 'pending')->where('id',$id)->get();
         $pending_list->map(function ($item){
             $user_name = User::findorfail($item->user_id);
-            $item->name = $user_name->name;
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
         });
         return view('admin-view-pending-transaction',compact('pending_list'),
         ['metaTitle'=>'View Transaction Pending | Admin Panel',
         'metaHeader'=>'Transaction Information']);
+    }
+
+    public function cancelReservation(Request $request)
+    {
+        $cancel_list = Reservation::findOrFail($request->id);
+        $cancel_list->status = "canceled";
+        $cancel_list->reason = $request->reason;
+        if($request->hasFile('rf_upload'))
+        {
+            $location = 'public/users_rf_upload'.$cancel_list->rf_upload;
+            if(File::exists($location))
+            {
+                File::delete($location);
+            }
+            $filenameWithExt = $request->file('rf_upload')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('rf_upload')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            $path = $request->file('rf_upload')->storeAs('public/refunded_receipt',$fileNameToStore);
+            $cancel_list->rf_upload_image = $fileNameToStore;
+        }
+        $cancel_list->update();
+        
+        $canceled = Reservation::with('reservation_package')->where('status', 'canceled')->get();
+        $canceled->map(function ($item){
+            $user_name = User::findorfail($item->user_id);
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
+        });
+
+        session()->flash('message','Successfully Canceled!');
+
+        return view('admin-cancel-transaction',compact('canceled'),
+        ['metaTitle'=>'Sucessfully Canceled Transaction | Admin Panel',
+        'metaHeader'=>'Transaction Canceled']);
+    }
+
+    public function viewCanceled($id)
+    {
+        $cancel_list = Reservation::with('reservation_package')->where('status', 'canceled')->where('id',$id)->get();
+        $cancel_list->map(function ($item){
+            $user_name = User::findorfail($item->user_id);
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
+        });
+        return view('admin-view-canceled-transaction',compact('cancel_list'),
+        ['metaTitle'=>'View Transaction Canceled | Admin Panel',
+        'metaHeader'=>'Canceled Information']);
     }
 
     public function approvedReservation($id)
@@ -206,7 +259,9 @@ class ReservationController extends Controller
         $approved = Reservation::with('reservation_package')->where('status', 'approved')->get();
         $approved->map(function ($item){
             $user_name = User::findorfail($item->user_id);
-            $item->name = $user_name->name;
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
         });
 
         session()->flash('message','Successfully Approved!');
@@ -221,7 +276,9 @@ class ReservationController extends Controller
         $approved = Reservation::with('reservation_package')->where('status', 'approved')->where('id',$id)->get();
         $approved->map(function ($item){
             $user_name = User::findorfail($item->user_id);
-            $item->name = $user_name->name;
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
         });
         return view('admin-view-inprocess-transaction',compact('approved'),
         ['metaTitle'=>'View Transaction Processing | Admin Panel',
@@ -237,7 +294,9 @@ class ReservationController extends Controller
         $completed = Reservation::with('reservation_package')->where('status', 'complete')->get();
         $completed->map(function ($item){
             $user_name = User::findorfail($item->user_id);
-            $item->name = $user_name->name;
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
         });
 
         session()->flash('message','Successfully Completed!');
@@ -252,7 +311,9 @@ class ReservationController extends Controller
         $completed = Reservation::with('reservation_package')->where('status', 'complete')->where('id',$id)->get();
         $completed->map(function ($item){
             $user_name = User::findorfail($item->user_id);
-            $item->name = $user_name->name;
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
         });
         return view('admin-view-completed-transaction',compact('completed'),
         ['metaTitle'=>'View Transaction Completed | Admin Panel',
@@ -261,14 +322,16 @@ class ReservationController extends Controller
 
     public function transactionHistory()
     {
+        $trasaction = Reservation::with('reservation_package')->where('user_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
         $business = Business::first();
-        return view('history-log',compact('business'));
+        return view('history-log',compact('business','trasaction'));
     }
 
     public function currentHistory()
     {
+        $current = Reservation::with('reservation_package')->where('user_id', auth()->user()->id)->orderBy('id', 'DESC')->first();
         $business = Business::first();
-        return view('current-log',compact('business'));
+        return view('current-log',compact('business','current'));
     }
 
 }

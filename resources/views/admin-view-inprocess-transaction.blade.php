@@ -11,7 +11,7 @@
             <div class="card-body">
             @foreach($approved as $data)
                 <div class="row mb-3">
-                    <h3 class="text-primary"><i class="fas fa-user"></i> {{$data->name}}</h3>
+                    <h3 class="text-primary"><i class="fas fa-user"></i> {{$data->first_name}} {{$data->middle_name}} {{$data->last_name}}</h3>
                     <div class="ml-auto">
                         <button type="button" class="btn btn-primary">
                         <i class="fas fa-eye"></i> View User

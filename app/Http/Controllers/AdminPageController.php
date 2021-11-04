@@ -14,7 +14,9 @@ class AdminPageController extends Controller
         $approved = Reservation::with('reservation_package')->where('status', 'approved')->get();
         $approved->map(function ($item){
             $user_name = User::findorfail($item->user_id);
-            $item->name = $user_name->name;
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
         });
         return view('admin-dashboard',
             compact('countPending','countApproved','countComplete','approved'),
@@ -52,11 +54,27 @@ class AdminPageController extends Controller
         $pending_list = Reservation::with('reservation_package')->where('status', 'pending')->get();
         $pending_list->map(function ($item){
             $user_name = User::findorfail($item->user_id);
-            $item->name = $user_name->name;
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
         });
         return view('admin-pending-transaction',compact('pending_list'),
         ['metaTitle'=>'Transaction Pending Page | Admin Panel',
         'metaHeader'=>'Transaction Pending']);
+    }
+
+    public function cancelList()
+    {
+        $canceled = Reservation::with('reservation_package')->where('status', 'canceled')->get();
+        $canceled->map(function ($item){
+            $user_name = User::findorfail($item->user_id);
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
+        });
+        return view('admin-cancel-transaction',compact('canceled'),
+        ['metaTitle'=>'Transaction Canceled History | Admin Panel',
+        'metaHeader'=>'Transaction Canceled']);
     }
 
     public function approvedList()
@@ -76,7 +94,9 @@ class AdminPageController extends Controller
         $completed = Reservation::with('reservation_package')->where('status', 'complete')->get();
         $completed->map(function ($item){
             $user_name = User::findorfail($item->user_id);
-            $item->name = $user_name->name;
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
         });
         return view('admin-completed-transaction',compact('completed'),
         ['metaTitle'=>'Transaction Complete Page | Admin Panel',

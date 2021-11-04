@@ -6,10 +6,10 @@
     <div class="row">
         <div class="card col-12 col-md-12 col-lg-12 order-md-2">
             <div class="card-header bg-primary">
-                <h5 class="card-title">Reservation Information</h5>
+                <h5 class="card-title">Canceled Information</h5>
             </div>
             <div class="card-body">
-            @foreach($completed as $data)
+            @foreach($cancel_list as $data)
                 <div class="row mb-3">
                     <h3 class="text-primary"><i class="fas fa-user"></i> {{$data->first_name}} {{$data->middle_name}} {{$data->last_name}}</h3>
                     <div class="ml-auto">
@@ -47,6 +47,15 @@
                                 <img src="/storage/upload_receipt/{{$data->upload_image}}" height="50px" class="mb-2" alt="white sample">
                             </a>
                         </li>
+                        <li class="list-group-item">
+                            <b>Reason</b> <a id="gcash_name" class="float-right">{{$data->reason}}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Uploaded Refunded Receipt</b>
+                            <a href="/storage/refunded_receipt/{{$data->rf_upload_image}}" class="float-right" data-toggle="lightbox" data-title="sample 1 - white">
+                                <img src="/storage/refunded_receipt/{{$data->rf_upload_image}}" height="50px" class="mb-2" alt="white sample">
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 @foreach($data->reservation_package->where('reservation_id' , $data->id) as $datas)
@@ -70,16 +79,10 @@
                         <p id="trans_d_payment" hidden>{{$data->downpayment}}</p>
                         <p id="tdp"></p>
                         <h5 class="mt-2 text-muted">Balance</h5>
-                        <p class="text-center bg-success rounded p-2">Already Paid!</p>
+                        <p>Not Available</p>
                         </div>
                     </div>
                 </div> 
-               
-                <div class="float-left mt-5 mb-3">
-                    <a href="{{route('completed.transaction')}}" class="btn btn-sm btn-danger p-3">
-                    <i class="fas fa-arrow-left"></i> Back</a>
-                </div>
-                
                 @endforeach  
             @endforeach    
             </div>

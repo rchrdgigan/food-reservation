@@ -11,7 +11,7 @@
             <div class="card-body">
             @foreach($pending_list as $data)
                 <div class="row mb-3">
-                    <h3 class="text-primary"><i class="fas fa-user"></i> {{$data->name}}</h3>
+                    <h3 class="text-primary"><i class="fas fa-user"></i> {{$data->first_name}} {{$data->middle_name}} {{$data->last_name}}</h3>
                     <div class="ml-auto">
                         <button type="button" class="btn btn-primary">
                         <i class="fas fa-eye"></i> View User
@@ -79,10 +79,15 @@
                         <a href="{{route('pending.transaction')}}" class="btn btn-sm btn-danger p-3">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     </div>
+                    
                     <div class="float-right mt-5 mb-3">
                         <button class="btn btn-sm btn-primary p-3" type="submit">
-                        Approved <i class="fas fa-arrow-right"></i></button>
+                        Approved <i class="fas fa-check"></i></button>
                     </div>  
+                    <div class="float-right mt-5 mr-5 mb-3">
+                        <a class="btn btn-sm btn-secondary p-3" id="{{$data->id}}" data-toggle="modal" data-target="#showCancelModal">
+                        <i class="fas fa-times"></i> Cancel</a>
+                    </div>
                 </form>  
                 @endforeach  
             @endforeach    
@@ -91,5 +96,39 @@
     </div>
     
 </div>
-
+<!-- Modal Cancellation -->
+<div class="modal fade" id="showCancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+            <h5 class="modal-title" id="exampleModalLabel">Cancel Information</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="card p-3">
+                    <form action="{{route('cancel')}}" method="post" id="cancel_frm" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                        <input id="id" name="id" type="text" hidden> 
+                        <div class="form-group col-12">
+                            <label for="reason">Reason: </label>
+                            <input id="reason" name="reason" type="text" class="@error('reason') is-invalid @enderror form-control" 
+                                    placeholder="Input your reason" required>
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="rf_upload">Upload Refund Receipt :</label>
+                            <input type="file" class="form-control" required name="rf_upload" id="rf_upload">
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-md btn-primary float-right" type="submit">
+                            Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
