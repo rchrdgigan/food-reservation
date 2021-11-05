@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <div class="row  mt-5">
+    <div class="row mt-5 mb-5">
     <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-white" style="background-color:#5f9ea0">
@@ -34,11 +34,11 @@
                                         <td><span class="bg-danger text-white rounded">pending</span></td>
                                     @elseif($data->status == "approved")
                                         <td><span class="bg-info text-white rounded">inprocessing</span></td>
-                                    @elseif($data->status == "completed")
+                                    @elseif($data->status == "complete")
                                         <td><span class="bg-success text-white rounded">completed</span></td>
                                     @endif
                                     <td>
-                                        <a href="" class="btn btn-primary btn-sm">View</a>
+                                        <a href="{{route('log.info',$data->id)}}" class="btn btn-primary btn-sm">View</a>
                                     </td>
                                 </tr>
                               @endforeach

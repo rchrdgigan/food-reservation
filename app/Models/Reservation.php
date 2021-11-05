@@ -31,4 +31,9 @@ class Reservation extends Model
         return $this->hasMany(ReservationPackage::class);
     }
 
+    public function assign_schedule_reservation()
+    {
+        return $this->hasMany(AssignScheduleReservation::class);
+    }
+
 }

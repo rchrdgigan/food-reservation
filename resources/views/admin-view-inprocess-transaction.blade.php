@@ -13,7 +13,7 @@
                 <div class="row mb-3">
                     <h3 class="text-primary"><i class="fas fa-user"></i> {{$data->first_name}} {{$data->middle_name}} {{$data->last_name}}</h3>
                     <div class="ml-auto">
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#showProfileModal">
                         <i class="fas fa-eye"></i> View User
                         </button>
                     </div>
@@ -81,17 +81,68 @@
                         <a href="{{route('inprocess.transaction')}}" class="btn btn-sm btn-danger p-3">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     </div>
+                    @if($r_id == NULL)
+                    <div class="float-right mt-5 mb-3">
+                        <button class="btn btn-sm btn-success p-3" disabled type="submit">
+                        Done <i class="fas fa-check"></i></button>
+                    </div> 
+                    @else
                     <div class="float-right mt-5 mb-3">
                         <button class="btn btn-sm btn-success p-3" type="submit">
                         Done <i class="fas fa-check"></i></button>
-                    </div>  
+                    </div> 
+                    @endif
                 </form>  
                 @endforeach  
             @endforeach    
             </div>
         </div>
     </div>
-    
 </div>
+<!-- Modal Show Profile -->
+<div class="modal fade" id="showProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+            <h5 class="modal-title" id="exampleModalLabel">Client Information</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card-body box-profile">
+                            <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" src="/storage/users_image/{{$data->image}}" alt="User profile picture">
+                            </div>
 
+                            <h3 class="profile-username text-center">{{$data->first_name}} {{$data->middle_name}} {{$data->last_name}} ({{$data->gender}})</h3>
+                            
+                            <p class="text-muted m-0 text-center">Address : {{$data->house_street}}, {{$data->baranggay}}, {{$data->municipality}}</p>
+                            <p class="text-muted m-0 text-center">Email : {{$data->email}}</p>
+                            <p class="text-muted m-0 text-center">Birthday : {{Carbon\Carbon::parse($data->birth_day)->format('M d, Y')}}</p>
+                            <p class="text-muted m-0 text-center">Contact : {{$data->contact}}</p>
+
+                            <ul class="list-group list-group-unbordered mt-3 mb-3">
+                            <li class="list-group-item">
+                                <b>Total of completed reservation</b> <a class="float-right">{{$countCompleted}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Total of cancellation</b> <a class="float-right">{{$countCanceled}}</a>
+                            </li>
+                            @if($dateCompleted == NULL)
+                            @else
+                            <li class="list-group-item">
+                                <b>Date of past reservation</b> <a class="float-right"> {{Carbon\Carbon::parse($dateCompleted->r_date)->format('M d, Y')}}</a>
+                            </li>
+                            @endif
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

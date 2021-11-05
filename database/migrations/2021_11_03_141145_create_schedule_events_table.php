@@ -15,6 +15,9 @@ class CreateScheduleEventsTable extends Migration
     {
         Schema::create('schedule_events', function (Blueprint $table) {
             $table->id();
+            $table->string('team');
+            $table->string('location');
+            $table->string('status')->default('incoming');
             $table->timestamps();
         });
     }

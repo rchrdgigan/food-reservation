@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\Models\{Reservation,FoodPackage,Food,ReservationPackage,User,Business,GCashInfo};
+use App\Models\{Reservation,FoodPackage,Food,ReservationPackage,User,Business,GCashInfo,AssignScheduleReservation,ScheduleEvent};
 use File;
 
 class ReservationController extends Controller
@@ -194,8 +194,20 @@ class ReservationController extends Controller
             $item->first_name = $user_name->first_name;
             $item->middle_name = $user_name->middle_name;
             $item->last_name = $user_name->last_name;
+            $item->gender = $user_name->gender;
+            $item->birth_day = $user_name->birth_day;
+            $item->image = $user_name->image;
+            $item->baranggay = $user_name->baranggay;
+            $item->house_street = $user_name->house_street;
+            $item->municipality = $user_name->municipality;
+            $item->email = $user_name->email;
+            $item->contact = $user_name->contact;
         });
-        return view('admin-view-pending-transaction',compact('pending_list'),
+        foreach($pending_list as $data)
+        $countCompleted = Reservation::where('status', 'complete')->where('user_id', $data->user_id)->count();
+        $countCanceled = Reservation::where('status', 'canceled')->where('user_id', $data->user_id)->count();
+        $dateCompleted = Reservation::where('status', 'complete')->where('user_id', $data->user_id)->orderBy('id', 'DESC')->first();
+        return view('admin-view-pending-transaction',compact('pending_list','countCompleted','countCanceled','dateCompleted'),
         ['metaTitle'=>'View Transaction Pending | Admin Panel',
         'metaHeader'=>'Transaction Information']);
     }
@@ -244,8 +256,20 @@ class ReservationController extends Controller
             $item->first_name = $user_name->first_name;
             $item->middle_name = $user_name->middle_name;
             $item->last_name = $user_name->last_name;
+            $item->gender = $user_name->gender;
+            $item->birth_day = $user_name->birth_day;
+            $item->image = $user_name->image;
+            $item->baranggay = $user_name->baranggay;
+            $item->house_street = $user_name->house_street;
+            $item->municipality = $user_name->municipality;
+            $item->email = $user_name->email;
+            $item->contact = $user_name->contact;
         });
-        return view('admin-view-canceled-transaction',compact('cancel_list'),
+        foreach($cancel_list as $data)
+        $countCompleted = Reservation::where('status', 'complete')->where('user_id', $data->user_id)->count();
+        $countCanceled = Reservation::where('status', 'canceled')->where('user_id', $data->user_id)->count();
+        $dateCompleted = Reservation::where('status', 'complete')->where('user_id', $data->user_id)->orderBy('id', 'DESC')->first();
+        return view('admin-view-canceled-transaction',compact('cancel_list','countCompleted','countCanceled','dateCompleted'),
         ['metaTitle'=>'View Transaction Canceled | Admin Panel',
         'metaHeader'=>'Canceled Information']);
     }
@@ -273,20 +297,39 @@ class ReservationController extends Controller
 
     public function viewApproved($id)
     {
+        $r_id = AssignScheduleReservation::where('reservation_id', $id)->first();
         $approved = Reservation::with('reservation_package')->where('status', 'approved')->where('id',$id)->get();
         $approved->map(function ($item){
             $user_name = User::findorfail($item->user_id);
             $item->first_name = $user_name->first_name;
             $item->middle_name = $user_name->middle_name;
             $item->last_name = $user_name->last_name;
+            $item->gender = $user_name->gender;
+            $item->birth_day = $user_name->birth_day;
+            $item->image = $user_name->image;
+            $item->baranggay = $user_name->baranggay;
+            $item->house_street = $user_name->house_street;
+            $item->municipality = $user_name->municipality;
+            $item->email = $user_name->email;
+            $item->contact = $user_name->contact;
         });
-        return view('admin-view-inprocess-transaction',compact('approved'),
+        foreach($approved as $data)
+        $countCompleted = Reservation::where('status', 'complete')->where('user_id', $data->user_id)->count();
+        $countCanceled = Reservation::where('status', 'canceled')->where('user_id', $data->user_id)->count();
+        $dateCompleted = Reservation::where('status', 'complete')->where('user_id', $data->user_id)->orderBy('id', 'DESC')->first();
+        return view('admin-view-inprocess-transaction',compact('approved','countCompleted','countCanceled','dateCompleted','r_id'),
         ['metaTitle'=>'View Transaction Processing | Admin Panel',
         'metaHeader'=>'Transaction Information']);
     }
 
     public function completedReservation($id) 
     {
+        //outgoing service
+        $schedule = AssignScheduleReservation::where('reservation_id', $id)->first();
+        $team_schedule = ScheduleEvent::findOrFail($schedule->schedule_id);
+        $team_schedule->status = "outgoing";
+        $team_schedule->update();
+
         $complete_list = Reservation::findOrFail($id);
         $complete_list->status = "complete";
         $complete_list->update();
@@ -314,8 +357,20 @@ class ReservationController extends Controller
             $item->first_name = $user_name->first_name;
             $item->middle_name = $user_name->middle_name;
             $item->last_name = $user_name->last_name;
+            $item->gender = $user_name->gender;
+            $item->birth_day = $user_name->birth_day;
+            $item->image = $user_name->image;
+            $item->baranggay = $user_name->baranggay;
+            $item->house_street = $user_name->house_street;
+            $item->municipality = $user_name->municipality;
+            $item->email = $user_name->email;
+            $item->contact = $user_name->contact;
         });
-        return view('admin-view-completed-transaction',compact('completed'),
+        foreach($completed as $data)
+        $countCompleted = Reservation::where('status', 'complete')->where('user_id', $data->user_id)->count();
+        $countCanceled = Reservation::where('status', 'canceled')->where('user_id', $data->user_id)->count();
+        $dateCompleted = Reservation::where('status', 'complete')->where('user_id', $data->user_id)->orderBy('id', 'DESC')->first();
+        return view('admin-view-completed-transaction',compact('completed','countCompleted','countCanceled','dateCompleted'),
         ['metaTitle'=>'View Transaction Completed | Admin Panel',
         'metaHeader'=>'Transaction Information']);
     }
@@ -332,6 +387,13 @@ class ReservationController extends Controller
         $current = Reservation::with('reservation_package')->where('user_id', auth()->user()->id)->orderBy('id', 'DESC')->first();
         $business = Business::first();
         return view('current-log',compact('business','current'));
+    }
+
+    public function showInfo($id)
+    {
+        $current = Reservation::with('reservation_package')->where('user_id', auth()->user()->id)->where('id' , $id)->first();
+        $business = Business::first();
+        return view('view-log',compact('business','current'));
     }
 
 }

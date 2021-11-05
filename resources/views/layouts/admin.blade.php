@@ -65,7 +65,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <!-- <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
+      <img src="{{asset('dist/img/food2.jpeg')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">J4's ADMIN PANEL</span>
     </a>
 
@@ -149,12 +149,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <p>Business Setting</p></a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('schedule.view')}}" class="nav-link">
                 <i class="nav-icon fas fa-calendar-alt ml-3"></i>
                 <p>Schedule Event</p></a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('list.user')}}" class="nav-link">
                 <i class="nav-icon fas fa-users-cog ml-3"></i>
                 <p>User Management</p></a>
               </li>
@@ -381,5 +381,37 @@ $('#showCancelModal').on('show.bs.modal', function (e) {
 });
 </script>
 
+<script>
+$('#assignTeamModal').on('show.bs.modal', function (e) {
+  var opener=e.relatedTarget;
+  var id=$(opener).attr('id');
+
+  $('#team_frm').find('[name="reservation_id"]').val(id);
+});
+</script>
+
+<script>
+  $(function () {
+    $("#team_item").DataTable({
+      "order":[[0,'desc']],
+      "responsive": true, 
+      "lengthChange": true, 
+      "autoWidth": false,
+      "lengthMenu":[[5,10,25,50,-1],[5,10,25,50,"All"]],
+    });
+  });
+</script>
+
+<script>
+  $('#editUserModal').on('show.bs.modal', function (e) {
+    var opener=e.relatedTarget;
+    var id=$(opener).attr('id');
+    var name=$(opener).attr('name');
+    var email=$(opener).attr('email');
+    $('#editForm').find('[name="user_id"]').val(id);
+    $('#editForm').find('[name="name"]').val(name);
+    $('#editForm').find('[name="email"]').val(email);
+  });
+</script>
 </body>
 </html>

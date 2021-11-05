@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\{Reservation,FoodPackage,Food,User,Business,Link,GCashInfo};
+use App\Models\{Reservation,FoodPackage,Food,User,Business,Link,GCashInfo,Admin};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class AdminPageController extends Controller
 {
@@ -82,7 +84,9 @@ class AdminPageController extends Controller
         $approved = Reservation::with('reservation_package')->where('status', 'approved')->get();
         $approved->map(function ($item){
             $user_name = User::findorfail($item->user_id);
-            $item->name = $user_name->name;
+            $item->first_name = $user_name->first_name;
+            $item->middle_name = $user_name->middle_name;
+            $item->last_name = $user_name->last_name;
         });
         return view('admin-inprocess-transaction',compact('approved'),
         ['metaTitle'=>'Transaction Processing Page | Admin Panel',
@@ -112,6 +116,50 @@ class AdminPageController extends Controller
         return view('admin-business-setting',compact('business','link','gcash'),
         ['metaTitle'=>'Business Setting Page | Admin Panel',
         'metaHeader'=>'Business Setting']);
+    }
+
+    public function listUsers()
+    {
+        $admin = Admin::get();
+        return view('admin-manage-user',compact('admin'),
+        ['metaTitle'=>'User Management Page | Admin Panel',
+        'metaHeader'=>'User Management']);
+    }
+
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+    }
+
+    protected function createAdmin(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        Admin::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        return back()->with('message', 'Successfully Created User!');
+    }
+
+    protected function updateAdmin(Request $request)
+    {
+        $user = Admin::find($request->user_id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->update();
+        return back()->with('message', 'Successfully Updated User!');
+    }
+
+    public function delAdmin($id)
+    {
+        $user = Admin::findorfail($id);
+        $user->delete();
+        return back()->with('message', 'Successfully Deleted User!');
     }
     
 }

@@ -22,30 +22,28 @@
                 <div class="card">
                     <div class="card-header text-white" style="background-color:#5f9ea0"><i class="fas fa-user"></i> Profile Picture</div>
                     <div class="card-body box-profile">
-                    <div class="container">
-                        <div class="picture-container">
-                            <div class="picture">
-                                <img src="/storage/users_image/{{auth()->user()->image}}" class="picture-src" id="wizardPicturePreview" title="">
-                                <input type="file" name="image" id="wizard-picture" class="">
+                        <div class="container">
+                            <div class="picture-container">
+                                <div class="picture">
+                                    <img src="/storage/users_image/{{auth()->user()->image}}" class="picture-src" id="wizardPicturePreview" title="">
+                                    <input type="file" name="image" id="wizard-picture" class="">
+                                </div>
+                                <h6 class="">Choose Picture</h6>
                             </div>
-                            <h6 class="">Choose Picture</h6>
                         </div>
+                        
+                        <h4 class="profile-username text-center">{{auth()->user()->first_name}} {{auth()->user()->middle_name}} {{auth()->user()->last_name}}</h4>
+
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item  border-0">
+                                <hr>
+                                <b>Email : </b><span>{{auth()->user()->email}}</span>
+                                <hr>
+                                <b>Address : </b><span>{{Auth::user()->house_street}}, {{Auth::user()->baranggay}}, {{Auth::user()->municipality}}</span>
+                                <hr>
+                            </li>
+                        </ul>
                     </div>
-                    
-                    <h4 class="profile-username text-center">{{auth()->user()->first_name}} {{auth()->user()->middle_name}} {{auth()->user()->last_name}}</h4>
-
-                    <ul class="list-group mb-3">
-                        <li class="list-group-item  border-0">
-                            <hr>
-                            <b>Email : </b><span>{{auth()->user()->email}}</span>
-                            <hr>
-                            <b>Address : </b><span>{{Auth::user()->house_street}}, {{Auth::user()->baranggay}}, {{Auth::user()->municipality}}</span>
-                            <hr>
-                        </li>
-                    </ul>
-
-                    
-                </div>
                 </div>
             </div>
             <div class="col-md-8">

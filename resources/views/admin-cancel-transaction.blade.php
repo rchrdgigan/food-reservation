@@ -41,7 +41,7 @@
                     <td>{{$data->reason}}</td>
                     <td><span class="bg-danger rounded p-1">Canceled</span></td>
                     <td>
-                        <form action="{{route('view.completed',$data->id)}}" method="post">
+                        <form action="{{route('view.cancel',$data->id)}}" method="post">
                         @csrf
                            <button class="btn btn-primary m-1 .btn-sm"
                                 type="submit"

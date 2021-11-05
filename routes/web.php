@@ -15,6 +15,7 @@ use App\Http\Controllers\{
     BusinessSettingController,
     PageController,
     UserController,
+    ScheduleController,
 };
 
 use App\Models\Business;
@@ -30,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
         //show transaction log
         Route::get('transaction/log/history', [ReservationController::class, 'transactionHistory'])->name('transaction.history');
         Route::get('transaction/current/history', [ReservationController::class, 'currentHistory'])->name('current.history');
+        Route::get('transaction/log/history/{id}', [ReservationController::class, 'showInfo'])->name('log.info');
     });
 });
 
@@ -37,9 +39,10 @@ Auth::routes();
 
 Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm']);
 Route::post('/login/admin', [LoginController::class,'adminLogin']);
-Route::get('/register/admin', [RegisterController::class,'showAdminRegisterForm']);
-Route::post('/register/admin', [RegisterController::class,'createAdmin']);
+
 Route::get('logout', [LoginController::class,'logout']);
+
+Route::get('/event/schedule', [ScheduleController::class, 'listEvents'])->name('events');
 
 Route::group(['middleware' => 'auth:admin'], function () {
     
@@ -51,9 +54,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
         Route::get('pending/transaction/list', [AdminPageController::class, 'pendingList'])->name('pending.transaction');
         Route::get('inprocess/transaction/list', [AdminPageController::class, 'approvedList'])->name('inprocess.transaction');
         Route::get('completed/transaction/list', [AdminPageController::class, 'completedList'])->name('completed.transaction');
-
         Route::get('cancel/transaction/list', [AdminPageController::class, 'cancelList'])->name('cancel.transaction');
-
         Route::get('setting/business', [AdminPageController::class, 'adminSetting'])->name('business.setting');
         //setting crud
         Route::post('setting/business/information', [BusinessSettingController::class, 'settingInformation'])->name('setting.information');
@@ -77,7 +78,15 @@ Route::group(['middleware' => 'auth:admin'], function () {
         Route::post('completed/transaction/view/{id}', [ReservationController::class, 'viewCompleted'])->name('view.completed');
         //trasaction cancel
         Route::put('cancel/transaction', [ReservationController::class, 'cancelReservation'])->name('cancel');
-        Route::post('cancel/transaction/view/{id}', [ReservationController::class, 'viewCanceled'])->name('view.completed');
+        Route::post('cancel/transaction/view/{id}', [ReservationController::class, 'viewCanceled'])->name('view.cancel');
+        //schedule setting
+        Route::get('list/schedule', [ScheduleController::class, 'listSchedule'])->name('schedule.view');
+        Route::post('setting/schedule', [ScheduleController::class, 'settingSchedule'])->name('assign.team');
+        //account management
+        Route::get('list/users/account', [AdminPageController::class, 'listUsers'])->name('list.user');
+        Route::post('register/admin', [AdminPageController::class,'createAdmin'])->name('create.user');
+        Route::put('update/admin', [AdminPageController::class,'updateAdmin'])->name('update.user');
+        Route::delete('del/admin/{id}', [AdminPageController::class,'delAdmin'])->name('del.user');
 
     });
 });

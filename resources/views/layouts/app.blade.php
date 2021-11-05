@@ -113,6 +113,9 @@
                             <a href="#services" class="nav-link"><i class="fas fa-drumstick-bite"></i> Products</a>
                         </li>
                         <li class="nav-item p-1">
+                            <a href="{{route('events')}}" class="nav-link"><i class="fas fa-calendar-alt"></i> Schedule Reserve</a>
+                        </li>
+                        <li class="nav-item p-1">
                             <a href="{{route('reservation')}}" class="nav-link"><i class="fas fa-calendar-check"></i> Reservation</a>
                         </li>
                         <!-- Authentication Links -->
@@ -168,3 +171,14 @@
 </body>
 </html>
 
+<script>
+  $(function () {
+    $("#table_item").DataTable({
+      "order":[[0,'desc']],
+      "responsive": true, 
+      "lengthChange": true, 
+      "autoWidth": false,
+      "lengthMenu":[[5,10,25,50,-1],[5,10,25,50,"All"]],
+    });
+  });
+</script>
