@@ -1,3 +1,7 @@
+html{
+    scroll-behavior: smooth;
+}
+
 .navbar {
     background: cadetblue;
 }
@@ -28,6 +32,7 @@
 }
 
 .about .about-right {
+    height: 350px;
     background-image: url("../images/food1.jpeg");
     background-repeat: no-repeat;
     background-position: center center;
@@ -35,6 +40,7 @@
 }
 
 .contact-left {
+    height: 350px;
     background-image: url("../images/food2.jpeg");
     background-repeat: no-repeat;
     background-position: center center;
@@ -51,6 +57,7 @@
 }
 
 .services-right {
+    height: 350px;
     background-image: url("../images/food3.jpeg");
     background-repeat: no-repeat;
     background-position: center center;
@@ -58,7 +65,6 @@
 }
 
 .services-left {
-    padding: 100px;
     background-color: #fbe8ff;
 }
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-4">
+<div class="container" style="margin-top:90px">
     <form action="{{route('update.profile')}}" method="POST" enctype="multipart/form-data">
     @method('PUT')
         @csrf

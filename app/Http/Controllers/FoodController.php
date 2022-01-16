@@ -21,7 +21,7 @@ class FoodController extends Controller
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('image')->getClientOriginalExtension();
             $fileNameToStore = $filename.'_'.time().'.'.$extension;
-            $path = $request->file('image')->storeAs('public/foods_image',$fileNameToStore);
+            $path = $request->file('image')->storeAs('public/foods_image/',$fileNameToStore);
         }
         else
         {
@@ -55,7 +55,7 @@ class FoodController extends Controller
         $food->categories = $request->categories;
         if($request->hasFile('image'))
         {
-            $location = 'public/foods_image'.$food->image;
+            $location = 'public/foods_image/'.$food->image;
             if(File::exists($location))
             {
                 File::delete($location);

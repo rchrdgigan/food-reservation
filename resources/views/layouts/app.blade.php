@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>J4rs - Online Catering Reservation</title>
+    <title>J4's - Online Catering Reservation</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -21,6 +21,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('css/custom.css') }}" />
+
     <!-- <link href="./css/custom.css" rel="stylesheet">
      -->
 
@@ -72,11 +73,41 @@
             width: 100%;
             
         }
+        /* css for show more show less */
+        #box-desc {
+            max-width: 400px; 
+            margin-top: 10px; 
+            position:relative;
+        }
+        #box-desc .text {
+            /*   width: 660px;  */
+            margin-bottom: 5px; 
+            position:relative; 
+            display: block;
+        }
+
+        #box-desc .show-more {
+        /*   width: 690px;  */
+        position:relative; 
+        font-size: 12px; 
+        padding-top: 5px; 
+        height: 20px; 
+        text-align: center; 
+        cursor: pointer;
+        }
+        #box-desc .show-more:hover { 
+            color: #1779dd;
+        }
+        #box-desc .show-more-height { 
+        height: 65px; 
+        overflow:hidden; 
+        }
+        /* end showmore showless */
      </style>
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light">
+        <nav class="navbar fixed-top navbar-expand-md navbar-light">
             <div class="container">
                 @if($business == '')
                 
@@ -110,7 +141,7 @@
                             <a href="#services" class="nav-link"><i class="fas fa-utensils"></i> Services</a>
                         </li>
                         <li class="nav-item p-1">
-                            <a href="#services" class="nav-link"><i class="fas fa-drumstick-bite"></i> Products</a>
+                            <a href="#products" class="nav-link"><i class="fas fa-drumstick-bite"></i> Products</a>
                         </li>
                         <li class="nav-item p-1">
                             <a href="{{route('events')}}" class="nav-link"><i class="fas fa-calendar-alt"></i> Schedule Reserve</a>

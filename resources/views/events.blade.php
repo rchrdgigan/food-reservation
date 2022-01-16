@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-4">
+<div class="container" style="margin-top:90px">
     <div class="row">
         <div class="col-md-6">
             <div class="card">
@@ -24,7 +24,7 @@
                                 <td>{{$data->team}}</td>
                                 <td>{{$data->location}}</td>
                                 <td>{{Carbon\Carbon::parse($data->r_date)->format('M d, Y | H:i:s')}}H</td>
-                                <td>{{$data->r_type}}</td>
+                                <th>{{$data->r_type}}</th>
                             </tr>
                         @endforeach
                         </tbody>
@@ -53,7 +53,7 @@
                                 <td>{{$data->team}}</td>
                                 <td>{{$data->location}}</td>
                                 <td>{{Carbon\Carbon::parse($data->r_date)->format('M d, Y | H:i:s')}}</td>
-                                <td>{{$data->r_type}}</td>
+                                <th>{{$data->r_type}}</th>
                             </tr>
                         @endforeach
                         </tbody>

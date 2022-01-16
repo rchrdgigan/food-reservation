@@ -14,3 +14,15 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+// script for showmore showless
+$(".show-more").click(function () {
+    var $this = $(this),
+    id = $this.attr('data-id'); 
+    if($(".text"+id).hasClass("show-more-height")) {
+        $(this).text("(Show Less)");
+    } else {
+        $(this).text("(Show More)");
+    }
+    $(".text"+id).toggleClass("show-more-height");
+});

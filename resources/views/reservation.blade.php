@@ -3,7 +3,7 @@
 @section('content')
 <form action="{{route('add.reservation')}}" method="post" enctype="multipart/form-data">
     @csrf
-    <div class="container">
+    <div class="container" style="margin-top:90px">
         <div class="card mt-5">
         <h4 class="card-header text-center text-white" style="background-color:#5f9ea0">Reservation Form</h4>
         <div class="outer-form-container">
